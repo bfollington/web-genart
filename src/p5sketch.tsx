@@ -47,9 +47,7 @@ export function P5Sketch({
     c.current++
     sketch.current = new p5((q) => {
       q.setup = () => {
-        const canvas = q.createCanvas(width, height).parent(elem.current)
-        canvas.style.width = '64px'
-        canvas.style.height = '64px'
+        q.createCanvas(width, height).parent(elem.current)
         setup(q)
       }
 

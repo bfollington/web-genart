@@ -37,7 +37,7 @@ function App() {
           fftAnalysisSampleRate={30}
           detail={4}
         />
-        <PixelSketch />
+        {/* <PixelSketch /> */}
       </header>
     </div>
   )
