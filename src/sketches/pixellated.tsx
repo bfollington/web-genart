@@ -34,7 +34,7 @@ function hexToAdjustable(hex: string) {
 function generate(palette?: string[]) {
   palette = palette || choose(palettes)
 
-  return {
+  const c = {
     palette,
     stalkLength: choose([3, 4, 5, 6, 7, 8]),
     timeScale: choose([2500000, 250000, 25000, 2500, -2500000, -250000, -25000, -2500]),
@@ -46,6 +46,9 @@ function generate(palette?: string[]) {
       iris: palette[3],
     },
   }
+
+  console.log(c)
+  return c
 }
 
 const defaultPalette = ['#95A131', '#C8CD3B', '#F6F1DE', '#F5B9AE', '#EE0B5B']
