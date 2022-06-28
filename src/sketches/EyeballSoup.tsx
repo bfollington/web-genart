@@ -2,33 +2,13 @@ import p5Types, { Vector } from 'p5'
 import { useCallback, useRef } from 'react'
 import { P5Sketch } from '../p5sketch'
 import palettes from '../color-palettes.json'
+import { choose, grid, hexToAdjustable } from '../util'
 
 function next(q: p5Types, t: number, x: number, y: number, a: number) {
   return q.createVector(
     x + q.map(Math.sin(t / 100), -1, 1, -a, a),
     y + q.map(Math.cos(t / 200), -1, 1, -a, a)
   )
-}
-
-function choose<T>(from: T[]) {
-  if (from.length === 0) throw new Error('Cannot choose from empty list')
-  return from[Math.floor(Math.random() * from.length)]
-}
-
-function hexToRGB(hex: string, alpha?: number) {
-  const r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16)
-
-  if (alpha) {
-    return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')'
-  } else {
-    return 'rgb(' + r + ', ' + g + ', ' + b + ')'
-  }
-}
-
-function hexToAdjustable(hex: string) {
-  return (alpha: number) => hexToRGB(hex, alpha)
 }
 
 function generate(palette?: string[]) {
@@ -82,12 +62,6 @@ function drawStalk(
   q.circle(tip.x, tip.y, 3 + 1 * Math.sin(t / 1000 - Math.PI / 4))
   q.fill(config.colors.iris)
   q.circle(tip.x, tip.y, 1 * Math.cos(t / 100 - Math.PI / 4))
-}
-
-function grid(rows: number, columns: number) {
-  return [...Array(rows)].map((_, ri) =>
-    [...Array(columns)].map((_, ci) => [ri / rows, ci / columns])
-  )
 }
 
 export function EyeballSoup() {
