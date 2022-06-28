@@ -90,7 +90,7 @@ function grid(rows: number, columns: number) {
   )
 }
 
-export function PixelSketch() {
+export function EyeballSoup() {
   const g = useRef<p5Types.Graphics | null>(null)
   const layout = grid(16, 12)
   const setup = useCallback((q: p5Types) => {

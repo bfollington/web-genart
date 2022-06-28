@@ -3,7 +3,7 @@ import { Sequence } from 'tone'
 import './App.css'
 import { AudioNodeMonitor } from './AudioNodeMonitor'
 import { song } from './patterns'
-import { PixelSketch } from './sketches/pixellated'
+import { EyeballSoup } from './sketches/eyeballSoup'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const vol = new Tone.Volume(-12).toDestination()
@@ -47,8 +47,8 @@ function App() {
       <header className="App-header">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<PixelSketch />} />
-            <Route path="/eyeball-soup" element={<PixelSketch />} />
+            <Route path="/" element={<EyeballSoup />} />
+            <Route path="/eyeball-soup" element={<EyeballSoup />} />
             <Route path="/audio-viz" element={<AudioViz />} />
           </Routes>
         </BrowserRouter>
