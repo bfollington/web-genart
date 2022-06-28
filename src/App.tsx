@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Bezier } from './sketches/Bezier'
-import { EyeballSoup } from './sketches/eyeballSoup'
+import { EyeballSoup } from './sketches/EyeballSoup'
 import { AudioViz } from './sketches/SynthAudioNodeViz'
 
 function App() {
