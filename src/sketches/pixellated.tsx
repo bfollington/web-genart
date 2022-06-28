@@ -141,15 +141,18 @@ export function PixelSketch() {
     _q.image(q, 0, 0, _q.width, _q.height)
   }, [])
   return (
-    <P5Sketch
-      noSmooth
-      draw={draw}
-      setup={setup}
-      width={1280}
-      height={720}
-      onMouseClicked={() => {
-        config = generate()
-      }}
-    />
+    <div>
+      <P5Sketch
+        noSmooth
+        draw={draw}
+        setup={setup}
+        width={1280}
+        height={720}
+        onMouseClicked={() => {
+          config = generate()
+        }}
+      />
+      Click to randomise
+    </div>
   )
 }
