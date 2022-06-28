@@ -3,7 +3,7 @@ import { Sequence } from 'tone'
 import './App.css'
 import { AudioNodeMonitor } from './AudioNodeMonitor'
 import { song } from './patterns'
-import { PixelSketch } from './pixellatedSketch'
+import { PixelSketch } from './sketches/pixellated'
 
 const vol = new Tone.Volume(-12).toDestination()
 const synth = new Tone.PolySynth()
@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button
+        {/* <button
           type="button"
           onClick={() => {
             Tone.start()
@@ -36,8 +36,8 @@ function App() {
           input={vol}
           fftAnalysisSampleRate={30}
           detail={4}
-        />
-        {/* <PixelSketch /> */}
+        /> */}
+        <PixelSketch />
       </header>
     </div>
   )
