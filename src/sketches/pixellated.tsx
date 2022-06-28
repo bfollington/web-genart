@@ -31,9 +31,8 @@ function hexToAdjustable(hex: string) {
   return (alpha: number) => hexToRGB(hex, alpha)
 }
 
-function generate() {
-  // const palette = choose(palettes)
-  const palette = ['#95A131', '#C8CD3B', '#F6F1DE', '#F5B9AE', '#EE0B5B']
+function generate(palette?: string[]) {
+  palette = palette || choose(palettes)
 
   return {
     palette,
@@ -49,7 +48,8 @@ function generate() {
   }
 }
 
-const config = generate()
+const defaultPalette = ['#95A131', '#C8CD3B', '#F6F1DE', '#F5B9AE', '#EE0B5B']
+let config = generate(defaultPalette)
 
 function drawStalk(
   q: p5Types,
@@ -140,5 +140,16 @@ export function PixelSketch() {
 
     _q.image(q, 0, 0, _q.width, _q.height)
   }, [])
-  return <P5Sketch noSmooth draw={draw} setup={setup} width={1280} height={720} />
+  return (
+    <P5Sketch
+      noSmooth
+      draw={draw}
+      setup={setup}
+      width={1280}
+      height={720}
+      onMouseClicked={() => {
+        config = generate()
+      }}
+    />
+  )
 }

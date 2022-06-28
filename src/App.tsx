@@ -4,6 +4,7 @@ import './App.css'
 import { AudioNodeMonitor } from './AudioNodeMonitor'
 import { song } from './patterns'
 import { PixelSketch } from './sketches/pixellated'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const vol = new Tone.Volume(-12).toDestination()
 const synth = new Tone.PolySynth()
@@ -16,28 +17,41 @@ const onSeqStep = (time, value) => {
 
 const sequence = new Sequence(onSeqStep, song, '8n')
 
+function AudioViz() {
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => {
+          Tone.start()
+          sequence.start(0)
+          Tone.Transport.start()
+        }}
+      >
+        Start
+      </button>
+      <AudioNodeMonitor
+        width={512}
+        height={128}
+        input={vol}
+        fftAnalysisSampleRate={30}
+        detail={4}
+      />
+    </>
+  )
+}
+
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {/* <button
-          type="button"
-          onClick={() => {
-            Tone.start()
-            sequence.start(0)
-            Tone.Transport.start()
-          }}
-        >
-          Start
-        </button>
-        <AudioNodeMonitor
-          width={512}
-          height={128}
-          input={vol}
-          fftAnalysisSampleRate={30}
-          detail={4}
-        /> */}
-        <PixelSketch />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<PixelSketch />} />
+            <Route path="/eyeball-soup" element={<PixelSketch />} />
+            <Route path="/audio-viz" element={<AudioViz />} />
+          </Routes>
+        </BrowserRouter>
       </header>
     </div>
   )
