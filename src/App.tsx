@@ -11,7 +11,7 @@ const synth = new Tone.PolySynth()
 
 synth.connect(vol)
 
-const onSeqStep = (time, value) => {
+const onSeqStep = (_time: number, value: string) => {
   if (value !== '-') synth.triggerAttackRelease(value, '8n')
 }
 

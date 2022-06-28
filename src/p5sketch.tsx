@@ -29,18 +29,14 @@ export function P5Sketch({
   draw,
   width,
   height,
-  pixelDensity = 1,
   noSmooth = false,
-  style,
   ...events
 }: {
   setup: (q: p5Types, parentElement?: Element | null) => void
   draw: (q: p5Types) => void
   width: number
   height: number
-  pixelDensity?: number
   noSmooth?: boolean
-  style?: CSSProperties
 
   onMouseClicked?: (event: object | undefined) => void
 }) {
@@ -71,7 +67,9 @@ export function P5Sketch({
     c.current++
     sketch.current = new p5((q: p5Types) => {
       q.setup = () => {
-        q.createCanvas(width, height).parent(elem.current)
+        if (elem.current !== null) {
+          q.createCanvas(width, height).parent(elem.current)
+        }
         setup(q)
       }
 
