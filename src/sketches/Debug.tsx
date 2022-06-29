@@ -93,7 +93,7 @@ export function Debug() {
 
   const onResize = useCallback(
     (x: number, y: number) => {
-      g.current?.resizeCanvas((dpr.current * x) / scale, (dpr.current * y) / scale)
+      g.current?.resizeCanvas(x / scale, y / scale)
     },
     [g]
   )
@@ -122,7 +122,7 @@ export function Debug() {
     q.text(`w=${q.width}`, 8, 16)
     q.text(`h=${q.height}`, 8, 32)
 
-    _q.image(q, _q.width / 2, _q.height / 2, _q.width / 2, _q.height / 2)
+    _q.image(q, 0, 0, _q.width, _q.height)
   }, [])
   return (
     <P5Sketch
@@ -132,7 +132,7 @@ export function Debug() {
       autoSize
       width={1280}
       height={720}
-      // onResize={onResize}
+      onResize={onResize}
       onMouseClicked={() => {
         if (!isFxHash()) {
           config = generate()

@@ -84,16 +84,15 @@ export function EyeballSoup() {
   const dpr = useRef<number>(1)
   const setup = useCallback((q: p5Types) => {
     dpr.current = q.pixelDensity()
-    g.current = q.createGraphics(
-      q.width / (scale * dpr.current),
-      q.height / (scale * dpr.current)
-    )
+    const w = Math.round(q.width / scale)
+    const h = Math.round(q.height / scale)
+    g.current = q.createGraphics(w, h)
     q.noSmooth()
   }, [])
 
   const onResize = useCallback(
     (x: number, y: number) => {
-      g.current?.resizeCanvas(x / (scale * dpr.current), y / (scale * dpr.current))
+      g.current?.resizeCanvas(x / scale, y / scale)
     },
     [g]
   )
