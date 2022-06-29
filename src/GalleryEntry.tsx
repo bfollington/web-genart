@@ -5,6 +5,7 @@ import { AudioViz } from './sketches/SynthAudioNodeViz'
 import { EyeballSoup } from './sketches/EyeballSoup'
 import { Frame } from './Frame'
 import { BezierStack } from './sketches/BezierStack'
+import { Debug } from './sketches/Debug'
 
 function GalleryEntry() {
   return (
@@ -14,6 +15,7 @@ function GalleryEntry() {
           <Routes>
             <Route path="/" element={<BezierStack />} />
             <Route path="/eyeball-soup" element={<EyeballSoup />} />
+            <Route path="/debug" element={<Debug />} />
             <Route path="/bezier" element={<Bezier />} />
             <Route path="/audio-viz" element={<AudioViz />} />
           </Routes>
