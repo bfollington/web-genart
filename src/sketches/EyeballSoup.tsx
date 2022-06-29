@@ -102,14 +102,11 @@ export function EyeballSoup() {
 
     q.background(config.colors.bg(0.5))
     const layout = grid(
-      Math.min(24, Math.round(q.width / (16 / dpr.current))),
-      Math.min(18, Math.round(q.height / (16 / dpr.current)))
+      Math.min(18, Math.round(q.height / 10)),
+      Math.min(24, Math.round(q.width / 10))
     )
 
-    const margin = q.createVector(
-      q.width / (2 * scale * dpr.current),
-      q.width / (2 * scale * dpr.current)
-    )
+    const margin = q.createVector(q.width / (4 * scale), q.width / (4 * scale))
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
 
     const displace = (v: Vector) => {
@@ -129,8 +126,8 @@ export function EyeballSoup() {
         const cell = row[ci]
         const pos = q
           .createVector(
-            area.x * cell[0] + 6 * Math.sin(t / 1000),
-            area.y * cell[1] + 6 * Math.cos(Math.cos(Math.sin(t / 1000)))
+            (area.x / layout.columns) * (ci + 0.5),
+            (area.y / layout.rows) * (ri + 0.5)
           )
           .add(margin)
 
@@ -140,9 +137,10 @@ export function EyeballSoup() {
           pos.x,
           pos.y,
           t +
-            (ci - (layout.columns / 2) * Math.sin(t / 500)) *
+            (ci - layout.columns / 2) *
+              Math.sin(t / 500) *
               Math.sin(Math.sin(t / 2000) + Math.cos(t / 1000)) *
-              (ri - (layout.rows / 2) * Math.cos(t / 422 + 44)) *
+              ((ri - layout.rows / 2) * Math.cos(t / 422 + 44)) *
               50,
           displace
         )
