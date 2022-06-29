@@ -20,14 +20,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:fxhash": "REACT_APP_FXHASH=true react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "build:fxhash": "REACT_APP_FXHASH=true GENERATE_SOURCEMAP=false react-scripts build",
+    "start:fxhash": "npm run enter-fxhash-mode && react-scripts start && npm run exit-fxhash-mode",
+    "build": "react-scripts build",
+    "build:fxhash": "npm run enter-fxhash-mode && react-scripts build && npm run exit-fxhash-mode",
     "clean": "npx rimraf ./build && npx rimraf ./fxhash-release.zip",
     "zip": "cd build && npx bestzip ../fxhash-release.zip * && cd ..",
-    "release": "REACT_APP_FXHASH=true npm run clean && npm run build:fxhash && npm run zip",
+    "release": "npm run clean && npm run build:fxhash && npm run zip",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "enter-fxhash-mode": "mv .env .env.old && mv fxhash.env .env",
+    "exit-fxhash-mode": "mv .env fxhash.env && mv .env.old .env"
   },
   "eslintConfig": {
     "extends": [

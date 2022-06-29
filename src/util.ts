@@ -11,7 +11,7 @@ export function choose<T>(from: T[]) {
 }
 
 export function isFxHash() {
-  const isExport = process.env.REACT_APP_FXHASH
+  const isExport = process.env.REACT_APP_BUILD_TARGET === 'fxhash'
   return !!isExport
 }
 
