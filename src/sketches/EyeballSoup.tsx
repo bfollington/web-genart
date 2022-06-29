@@ -71,7 +71,7 @@ function drawStalk(
   q.circle(tip.x, tip.y, k * (1 * Math.cos(t / 100 - Math.PI / 4)))
 }
 
-const scale = 5
+const scale = devicePixelRatio >= 3 ? 3 : 5
 
 export function EyeballSoup() {
   const g = useRef<p5Types.Graphics | null>(null)
