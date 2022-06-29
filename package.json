@@ -19,9 +19,9 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "REACT_APP_FXHASH=false react-scripts start",
+    "start": "react-scripts start",
     "start:fxhash": "REACT_APP_FXHASH=true react-scripts start",
-    "build": "REACT_APP_FXHASH=false GENERATE_SOURCEMAP=false react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "build:fxhash": "REACT_APP_FXHASH=true GENERATE_SOURCEMAP=false react-scripts build",
     "clean": "npx rimraf ./build && npx rimraf ./fxhash-release.zip",
     "zip": "cd build && npx bestzip ../fxhash-release.zip * && cd ..",

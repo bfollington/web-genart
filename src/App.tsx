@@ -1,7 +1,9 @@
 import './App.css'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Entry = require(process.env.REACT_APP_FXHASH
+const Entry = require(window.process &&
+  window.process.env &&
+  window.process.env.REACT_APP_FXHASH
   ? './FxHashEntry'
   : './GalleryEntry').default
 
