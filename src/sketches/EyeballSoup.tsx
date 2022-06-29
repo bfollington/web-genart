@@ -58,13 +58,7 @@ function drawStalk(
 
   let tip = q.createVector(x, y)
   for (let i = 0; i < config.stalkLength; i++) {
-    const newTip = next(
-      q,
-      t + Math.sin(t / 1000) + i * config.timeScale,
-      tip.x,
-      tip.y,
-      2 * k
-    )
+    const newTip = next(q, t + Math.sin(t / 1000) + i * config.timeScale, tip.x, tip.y, 2)
     displace(newTip)
     q.line(tip.x, tip.y, newTip.x, newTip.y)
     tip = newTip
@@ -112,7 +106,10 @@ export function EyeballSoup() {
       Math.min(18, Math.round(q.height / (16 / dpr.current)))
     )
 
-    const margin = q.createVector(q.width / 20, q.width / 20)
+    const margin = q.createVector(
+      q.width / (2 * scale * dpr.current),
+      q.width / (2 * scale * dpr.current)
+    )
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
 
     const displace = (v: Vector) => {
