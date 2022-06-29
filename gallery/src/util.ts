@@ -1,6 +1,16 @@
+import { random } from './random'
+
 export function choose<T>(from: T[]) {
   if (from.length === 0) throw new Error('Cannot choose from empty list')
-  return from[Math.floor(Math.random() * from.length)]
+  return from[Math.floor(random() * from.length)]
+}
+
+export function isFxHash() {
+  return !!(window as any).fxhash
+}
+
+export function isFxPreview() {
+  return !!(window as any).isFxpreview
 }
 
 export function hexToRGB(hex: string, alpha?: number) {
@@ -20,7 +30,11 @@ export function hexToAdjustable(hex: string) {
 }
 
 export function grid(rows: number, columns: number) {
-  return [...Array(rows)].map((_, ri) =>
-    [...Array(columns)].map((_, ci) => [ri / rows, ci / columns])
-  )
+  return {
+    cells: [...Array(rows)].map((_, ri) =>
+      [...Array(columns)].map((_, ci) => [ri / rows, ci / columns])
+    ),
+    rows,
+    columns,
+  }
 }

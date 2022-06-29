@@ -1,8 +1,9 @@
 import p5Types, { Vector } from 'p5'
+import React from 'react'
 import { useCallback, useRef } from 'react'
 import { P5Sketch } from '../p5sketch'
 import palettes from '../color-palettes.json'
-import { choose, grid, hexToAdjustable } from '../util'
+import { choose, grid, hexToAdjustable, isFxHash, isFxPreview } from '../util'
 
 function next(q: p5Types, t: number, x: number, y: number, a: number) {
   return q.createVector(
@@ -32,26 +33,39 @@ function generate(palette?: string[]) {
 }
 
 const defaultPalette = ['#95A131', '#C8CD3B', '#F6F1DE', '#F5B9AE', '#EE0B5B']
-let config = generate(defaultPalette)
+let config = generate(isFxHash() ? undefined : defaultPalette)
+
+;(window as any).$fxhashFeatures = {
+  stalkLength: config.stalkLength,
+  timeScale: config.timeScale,
+  mouseDistort: config.mouseDistort,
+}
 
 function drawStalk(
   q: p5Types,
+  dpr: number,
   x: number,
   y: number,
   t: number,
   displace: (v: Vector) => Vector
 ) {
+  const k = 2 / dpr
   q.noStroke()
   q.fill(config.colors.stalk)
-  q.circle(x, y, 2)
+  q.circle(x, y, 2 * k)
 
   q.stroke(config.colors.stalk)
-  q.strokeWeight(1)
-  q.noSmooth()
+  q.strokeWeight(1 * k)
 
   let tip = q.createVector(x, y)
   for (let i = 0; i < config.stalkLength; i++) {
-    const newTip = next(q, t + Math.sin(t / 1000) + i * config.timeScale, tip.x, tip.y, 2)
+    const newTip = next(
+      q,
+      t + Math.sin(t / 1000) + i * config.timeScale,
+      tip.x,
+      tip.y,
+      2 * k
+    )
     displace(newTip)
     q.line(tip.x, tip.y, newTip.x, newTip.y)
     tip = newTip
@@ -59,53 +73,74 @@ function drawStalk(
 
   q.noStroke()
   q.fill(config.colors.bloom)
-  q.circle(tip.x, tip.y, 3 + 1 * Math.sin(t / 1000 - Math.PI / 4))
+  q.circle(tip.x, tip.y, k * (3 + 1 * Math.sin(t / 1000 - Math.PI / 4)))
   q.fill(config.colors.iris)
-  q.circle(tip.x, tip.y, 1 * Math.cos(t / 100 - Math.PI / 4))
+  q.circle(tip.x, tip.y, k * (1 * Math.cos(t / 100 - Math.PI / 4)))
 }
+
+const scale = 5
 
 export function EyeballSoup() {
   const g = useRef<p5Types.Graphics | null>(null)
-  const layout = grid(16, 12)
+  const dpr = useRef<number>(1)
   const setup = useCallback((q: p5Types) => {
-    g.current = q.createGraphics(1280 / 10, 720 / 10)
-    g.current.pixelDensity(q.pixelDensity())
+    dpr.current = q.pixelDensity()
+    g.current = q.createGraphics(
+      q.width / (scale * dpr.current),
+      q.height / (scale * dpr.current)
+    )
+    q.noSmooth()
   }, [])
+
+  const onResize = useCallback(
+    (x: number, y: number) => {
+      g.current?.resizeCanvas(x / scale, y / scale)
+    },
+    [g]
+  )
 
   const draw = useCallback((_q: p5Types) => {
     _q.background(config.colors.bg(1))
-    _q.noSmooth()
     const t = _q.millis() / 10
 
     if (g.current === null) return
     const q = g.current
-    const scale = _q.width / q.width
 
-    q.background(config.colors.bg(0.4))
+    q.background(config.colors.bg(0.5))
+    const layout = grid(
+      Math.min(24, Math.round(q.width / (16 / dpr.current))),
+      Math.min(18, Math.round(q.height / (16 / dpr.current)))
+    )
 
-    for (let ri = 0; ri < layout.length; ri++) {
-      const row = layout[ri]
+    const margin = q.createVector(q.width / 20, q.width / 20)
+    const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
+
+    for (let ri = 0; ri < layout.cells.length; ri++) {
+      const row = layout.cells[ri]
       for (let ci = 0; ci < row.length; ci++) {
         const cell = row[ci]
-        const pos = q.createVector(
-          q.width * cell[0] + 10 * Math.sin(t / 1000),
-          q.height * cell[1] + 10 * Math.cos(Math.cos(Math.sin(t / 1000)))
-        )
+        const pos = q
+          .createVector(
+            area.x * cell[0] + 6 * Math.sin(t / 1000),
+            area.y * cell[1] + 6 * Math.cos(Math.cos(Math.sin(t / 1000)))
+          )
+          .add(margin)
 
         drawStalk(
           q,
+          dpr.current,
           pos.x,
           pos.y,
           t +
-            (ci - 8 * Math.sin(t / 500)) *
+            (ci - (layout.columns / 2) * Math.sin(t / 500)) *
               Math.sin(Math.sin(t / 2000) + Math.cos(t / 1000)) *
-              (ri - 8 * Math.cos(t / 422 + 44)) *
+              (ri - (layout.rows / 2) * Math.cos(t / 422 + 44)) *
               50,
           (v: Vector) => {
             const k = config.mouseDistort
             const displacement = q.createVector(
-              _q.mouseX / scale - v.x,
-              _q.mouseY / scale - v.y
+              _q.mouseX / (scale * dpr.current) - v.x,
+              _q.mouseY / (scale * dpr.current) - v.y
             )
             displacement.mult(k / Math.pow(displacement.mag(), 2))
 
@@ -118,18 +153,19 @@ export function EyeballSoup() {
     _q.image(q, 0, 0, _q.width, _q.height)
   }, [])
   return (
-    <div>
-      <P5Sketch
-        noSmooth
-        draw={draw}
-        setup={setup}
-        width={1280}
-        height={720}
-        onMouseClicked={() => {
+    <P5Sketch
+      noSmooth
+      draw={draw}
+      setup={setup}
+      autoSize
+      width={1024}
+      height={1024}
+      onResize={onResize}
+      onMouseClicked={() => {
+        if (!isFxHash()) {
           config = generate()
-        }}
-      />
-      Click to randomise
-    </div>
+        }
+      }}
+    />
   )
 }

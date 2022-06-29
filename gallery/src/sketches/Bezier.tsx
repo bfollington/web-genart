@@ -138,18 +138,16 @@ export function Bezier() {
     _q.image(q, 0, 0, _q.width, _q.height)
   }, [])
   return (
-    <div>
-      <P5Sketch
-        noSmooth
-        draw={draw}
-        setup={setup}
-        width={1280}
-        height={720}
-        onMouseClicked={() => {
-          config = generate()
-        }}
-      />
-      Click to randomise
-    </div>
+    <P5Sketch
+      noSmooth
+      autoSize
+      draw={draw}
+      setup={setup}
+      width={1280}
+      height={720}
+      onMouseClicked={() => {
+        config = generate()
+      }}
+    />
   )
 }

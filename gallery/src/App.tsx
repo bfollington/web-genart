@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
+import { Frame } from './Frame'
 import { Bezier } from './sketches/Bezier'
 import { EyeballSoup } from './sketches/EyeballSoup'
 import { AudioViz } from './sketches/SynthAudioNodeViz'
@@ -7,7 +8,7 @@ import { AudioViz } from './sketches/SynthAudioNodeViz'
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <Frame>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<EyeballSoup />} />
@@ -16,7 +17,7 @@ function App() {
             <Route path="/audio-viz" element={<AudioViz />} />
           </Routes>
         </BrowserRouter>
-      </header>
+      </Frame>
     </div>
   )
 }

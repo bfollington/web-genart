@@ -1,5 +1,6 @@
 import p5Types from 'p5'
 import p5 from 'p5'
+import React from 'react'
 import { CSSProperties, useEffect, useRef } from 'react'
 
 export const p5Events = [
@@ -30,6 +31,8 @@ export function P5Sketch({
   width,
   height,
   noSmooth = false,
+  autoSize = false,
+  webgl = false,
   ...events
 }: {
   setup: (q: p5Types, parentElement?: Element | null) => void
@@ -37,10 +40,13 @@ export function P5Sketch({
   width: number
   height: number
   noSmooth?: boolean
+  autoSize?: boolean
+  webgl?: boolean
 
   onMouseClicked?: (event: object | undefined) => void
+  onResize?: (x: number, y: number) => void
 }) {
-  const elem = useRef(null)
+  const elem = useRef<HTMLDivElement>(null)
   const sketch = useRef<p5Types | null>(null)
   const c = useRef(0)
 
@@ -68,7 +74,14 @@ export function P5Sketch({
     sketch.current = new p5((q: p5Types) => {
       q.setup = () => {
         if (elem.current !== null) {
-          q.createCanvas(width, height).parent(elem.current)
+          if (autoSize) {
+            const b = elem.current.getBoundingClientRect()
+            q.createCanvas(b.width, b.height, webgl ? q.WEBGL : q.P2D).parent(
+              elem.current
+            )
+          } else {
+            q.createCanvas(width, height, webgl ? q.WEBGL : q.P2D).parent(elem.current)
+          }
         }
         setup(q)
       }
@@ -77,10 +90,35 @@ export function P5Sketch({
       if (events.onMouseClicked) {
         q.mouseClicked = events.onMouseClicked
       }
+
+      q.windowResized = () => {
+        if (elem.current) {
+          const b = elem.current.getBoundingClientRect()
+
+          if (autoSize) {
+            q.resizeCanvas(b.width, b.height)
+          }
+
+          events.onResize && events.onResize(b.width, b.height)
+        }
+      }
+
+      q.keyPressed = () => {
+        const code = q.keyCode
+        if (code === 70) {
+          q.fullscreen(true)
+        }
+      }
     })
 
     return cleanup
   }, [setup, draw])
 
-  return <div className={noSmooth ? 'no-smooth' : ''} ref={elem} />
+  return (
+    <div
+      className={noSmooth ? 'p5js-container no-smooth' : 'p5js-container'}
+      style={{ height: '100%' }}
+      ref={elem}
+    />
+  )
 }
