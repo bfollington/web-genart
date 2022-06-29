@@ -77,7 +77,7 @@ function randomPoint(q: p5Types) {
 }
 
 function makePoints(q: p5Types) {
-  return [...Array(8)].map((_) => randomPoint(q))
+  return [...Array(8)].map(() => randomPoint(q))
 }
 
 export function Bezier() {
