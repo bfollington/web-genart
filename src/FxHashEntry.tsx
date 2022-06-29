@@ -1,13 +1,15 @@
-import "./App.css";
-import { Frame } from "./Frame";
-import { EyeballSoup } from "./sketches/EyeballSoup";
+import './App.css'
+import { Frame } from './Frame'
+import { EyeballSoup } from './sketches/EyeballSoup'
 
 function FxHashEntry() {
   return (
-    <Frame>
-      <EyeballSoup />
-    </Frame>
-  );
+    <div className="App">
+      <Frame>
+        <EyeballSoup />
+      </Frame>
+    </div>
+  )
 }
 
-export default FxHashEntry;
+export default FxHashEntry

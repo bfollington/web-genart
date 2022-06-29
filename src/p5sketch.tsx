@@ -42,7 +42,7 @@ export function P5Sketch({
   autoSize?: boolean
   webgl?: boolean
 
-  onMouseClicked?: (event: object | undefined) => void
+  onMouseClicked?: (event: any | undefined) => void
   onResize?: (x: number, y: number) => void
 }) {
   const elem = useRef<HTMLDivElement>(null)
