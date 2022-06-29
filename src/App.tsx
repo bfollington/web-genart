@@ -1,11 +1,8 @@
 import './App.css'
 
+const isFxhash = !!process.env.REACT_APP_FXHASH
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const Entry = require(window.process &&
-  window.process.env &&
-  window.process.env.REACT_APP_FXHASH
-  ? './FxHashEntry'
-  : './GalleryEntry').default
+const Entry = require(isFxhash ? './FxHashEntry' : './GalleryEntry').default
 
 function App() {
   return (
