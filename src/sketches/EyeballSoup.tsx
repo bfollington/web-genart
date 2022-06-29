@@ -93,6 +93,9 @@ export function EyeballSoup() {
   const onResize = useCallback(
     (x: number, y: number) => {
       g.current?.resizeCanvas(x / scale, y / scale)
+      const w = Math.round(x / scale)
+      const h = Math.round(y / scale)
+      g.current?.resizeCanvas(w, h)
     },
     [g]
   )
