@@ -27,7 +27,7 @@ export function FrequencyWindow({
     const n = input.context.createAnalyser()
     n.fftSize = 2048 * detail
     return n
-  }, [input])
+  }, [input, detail])
   const timeDomainData = useRef(new Float32Array(analyserNode.fftSize))
   const timeDomainTarget = useRef(new Float32Array(analyserNode.fftSize))
   const frequencyData = useRef(new Float32Array(analyserNode.frequencyBinCount))
@@ -51,81 +51,84 @@ export function FrequencyWindow({
 
   const setup = useCallback((q: p5Types) => {}, [])
 
-  const draw = useCallback((q: p5Types) => {
-    analyserNode.getFloatFrequencyData(frequencyData.current)
+  const draw = useCallback(
+    (q: p5Types) => {
+      analyserNode.getFloatFrequencyData(frequencyData.current)
 
-    for (let i = 0; i < timeDomainData.current.length; i++) {
-      timeDomainData.current[i] = damp(
-        q,
-        timeDomainData.current[i],
-        timeDomainTarget.current[i],
-        0.01
-      )
+      for (let i = 0; i < timeDomainData.current.length; i++) {
+        timeDomainData.current[i] = damp(
+          q,
+          timeDomainData.current[i],
+          timeDomainTarget.current[i],
+          0.01
+        )
 
-      frequencyData.current[i] = damp(
-        q,
-        frequencyData.current[i],
-        frequencyTarget.current[i],
-        0.01
-      )
-    }
+        frequencyData.current[i] = damp(
+          q,
+          frequencyData.current[i],
+          frequencyTarget.current[i],
+          0.01
+        )
+      }
 
-    q.background(0, 96)
+      q.background(0, 96)
 
-    q.noStroke()
-    q.fill(255, 255, 255, 64)
+      q.noStroke()
+      q.fill(255, 255, 255, 64)
 
-    // analyserNode.getFloatTimeDomainData(analyserData.current)
+      // analyserNode.getFloatTimeDomainData(analyserData.current)
 
-    q.beginShape()
-    q.vertex(0, q.height)
+      q.beginShape()
+      q.vertex(0, q.height)
 
-    for (let i = 0; i < frequencyData.current.length; i++) {
-      // -1...1
-      const amplitude = frequencyData.current[i] / 100
+      for (let i = 0; i < frequencyData.current.length; i++) {
+        // -1...1
+        const amplitude = frequencyData.current[i] / 100
 
-      const y = q.map(
-        amplitude,
-        0,
-        -1,
-        q.height / 2 - q.height / 4,
-        q.height / 2 + q.height / 4
-      )
+        const y = q.map(
+          amplitude,
+          0,
+          -1,
+          q.height / 2 - q.height / 4,
+          q.height / 2 + q.height / 4
+        )
 
-      const x = q.map(i, 0, frequencyData.current.length - 1, 0, q.width)
+        const x = q.map(i, 0, frequencyData.current.length - 1, 0, q.width)
 
-      q.vertex(x, y)
-    }
+        q.vertex(x, y)
+      }
 
-    q.vertex(q.width, q.height)
-    q.endShape()
+      q.vertex(q.width, q.height)
+      q.endShape()
 
-    q.noFill()
-    q.stroke(128, 255, 128, 255)
+      q.noFill()
+      q.stroke(128, 255, 128, 255)
 
-    // analyserNode.getFloatTimeDomainData(analyserData.current)
+      // analyserNode.getFloatTimeDomainData(analyserData.current)
 
-    q.beginShape()
+      q.beginShape()
 
-    for (let i = 0; i < timeDomainData.current.length; i++) {
-      // -1...1
-      const amplitude = timeDomainData.current[i]
+      for (let i = 0; i < timeDomainData.current.length; i++) {
+        // -1...1
+        const amplitude = timeDomainData.current[i]
 
-      const y = q.map(
-        amplitude,
-        -1,
-        1,
-        q.height / 2 - q.height / 4,
-        q.height / 2 + q.height / 4
-      )
+        const y = q.map(
+          amplitude,
+          -1,
+          1,
+          q.height / 2 - q.height / 4,
+          q.height / 2 + q.height / 4
+        )
 
-      const x = q.map(i, 0, timeDomainData.current.length - 1, 0, q.width)
+        const x = q.map(i, 0, timeDomainData.current.length - 1, 0, q.width)
 
-      q.vertex(x, y)
-    }
+        q.vertex(x, y)
+      }
 
-    q.endShape()
-  }, [])
+      q.endShape()
+    },
+    [frequencyData, timeDomainData, timeDomainTarget, frequencyTarget, analyserNode]
+  )
 
   return <P5Sketch setup={setup} draw={draw} width={width} height={height} />
 }

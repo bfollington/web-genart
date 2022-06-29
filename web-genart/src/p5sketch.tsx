@@ -1,7 +1,6 @@
 import p5Types from 'p5'
 import p5 from 'p5'
-import React from 'react'
-import { CSSProperties, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 export const p5Events = [
   'draw',
@@ -112,7 +111,7 @@ export function P5Sketch({
     })
 
     return cleanup
-  }, [setup, draw])
+  }, [setup, draw, autoSize, events, height, webgl, width])
 
   return (
     <div

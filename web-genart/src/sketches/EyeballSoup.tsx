@@ -1,9 +1,8 @@
 import p5Types, { Vector } from 'p5'
-import React from 'react'
 import { useCallback, useRef } from 'react'
 import { P5Sketch } from '../p5sketch'
 import palettes from '../color-palettes.json'
-import { choose, grid, hexToAdjustable, isFxHash, isFxPreview } from '../util'
+import { choose, grid, hexToAdjustable, isFxHash } from '../util'
 
 function next(q: p5Types, t: number, x: number, y: number, a: number) {
   return q.createVector(
@@ -94,7 +93,7 @@ export function EyeballSoup() {
 
   const onResize = useCallback(
     (x: number, y: number) => {
-      g.current?.resizeCanvas(x / scale, y / scale)
+      g.current?.resizeCanvas(x / (scale * dpr.current), y / (scale * dpr.current))
     },
     [g]
   )
@@ -114,6 +113,17 @@ export function EyeballSoup() {
 
     const margin = q.createVector(q.width / 20, q.width / 20)
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
+
+    const displace = (v: Vector) => {
+      const k = config.mouseDistort
+      const displacement = q.createVector(
+        _q.mouseX / (scale * dpr.current) - v.x,
+        _q.mouseY / (scale * dpr.current) - v.y
+      )
+      displacement.mult(k / Math.pow(displacement.mag(), 2))
+
+      return v.sub(displacement)
+    }
 
     for (let ri = 0; ri < layout.cells.length; ri++) {
       const row = layout.cells[ri]
@@ -136,16 +146,7 @@ export function EyeballSoup() {
               Math.sin(Math.sin(t / 2000) + Math.cos(t / 1000)) *
               (ri - (layout.rows / 2) * Math.cos(t / 422 + 44)) *
               50,
-          (v: Vector) => {
-            const k = config.mouseDistort
-            const displacement = q.createVector(
-              _q.mouseX / (scale * dpr.current) - v.x,
-              _q.mouseY / (scale * dpr.current) - v.y
-            )
-            displacement.mult(k / Math.pow(displacement.mag(), 2))
-
-            return v.sub(displacement)
-          }
+          displace
         )
       }
     }

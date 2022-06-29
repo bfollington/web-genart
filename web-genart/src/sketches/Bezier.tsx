@@ -97,7 +97,6 @@ export function Bezier() {
 
     if (gfx.current === null) return
     const q = gfx.current
-    const scale = _q.width / q.width
 
     const a = q
       .createVector((1 / 3) * q.width, (1 / 3) * q.height)
