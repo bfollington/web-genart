@@ -87,9 +87,11 @@ export function P5Sketch({
         if (elem.current !== null) {
           if (autoSize) {
             const b = elem.current.getBoundingClientRect()
-            q.createCanvas(b.width, b.height, webgl ? q.WEBGL : q.P2D).parent(
-              elem.current
-            )
+            q.createCanvas(
+              b.width,
+              Math.min(window.innerHeight, b.height),
+              webgl ? q.WEBGL : q.P2D
+            ).parent(elem.current)
           } else {
             q.createCanvas(width, height, webgl ? q.WEBGL : q.P2D).parent(elem.current)
           }
@@ -107,7 +109,7 @@ export function P5Sketch({
           const b = elem.current.getBoundingClientRect()
 
           if (autoSize) {
-            q.resizeCanvas(b.width, b.height)
+            q.resizeCanvas(b.width, Math.min(window.innerHeight, b.height))
           }
 
           events.onResize && events.onResize(b.width, b.height)
