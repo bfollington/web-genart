@@ -1,22 +1,22 @@
 .display-frame {
   width: 100vw;
   max-width: 100vw;
-  height: 100vh;
+  height: min(100vh, var(--height, 999999px));
   max-height: 100vh;
   overflow: hidden;
 }
 
 html,
 body {
-  overscroll-behavior-x: none;
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
 }
 
 .App {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: min(100vh, var(--height, 999999px));
+  overflow: hidden;
 }
 
 .p5js-container {

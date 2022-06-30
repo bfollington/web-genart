@@ -96,6 +96,8 @@ export function P5Sketch({
             q.createCanvas(width, height, webgl ? q.WEBGL : q.P2D).parent(elem.current)
           }
         }
+        document.documentElement.style.setProperty('--height', `${window.innerHeight}px`)
+
         setup(q)
       }
 
@@ -107,6 +109,10 @@ export function P5Sketch({
       q.windowResized = () => {
         if (elem.current) {
           const b = elem.current.getBoundingClientRect()
+          document.documentElement.style.setProperty(
+            '--height',
+            `${window.innerHeight}px`
+          )
 
           if (autoSize) {
             q.resizeCanvas(b.width, Math.min(window.innerHeight, b.height))
