@@ -138,12 +138,15 @@ export function Bezier() {
   }, [])
   return (
     <P5Sketch
+      sketchName="Bezier"
       noSmooth
       autoSize
       draw={draw}
       setup={setup}
       width={1280}
       height={720}
+      enableFullscreen
+      enableScreenshot
       onMouseClicked={() => {
         config = generate()
       }}

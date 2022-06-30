@@ -129,6 +129,7 @@ export function Debug() {
   return (
     <P5Sketch
       noSmooth
+      sketchName="Debugger"
       draw={draw}
       setup={setup}
       autoSize

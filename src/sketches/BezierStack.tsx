@@ -160,6 +160,9 @@ export function BezierStack() {
       setup={setup}
       width={1280}
       height={720}
+      enableFullscreen
+      enableScreenshot
+      sketchName="Bezier Stack"
       onMouseClicked={() => {
         config = generate()
       }}

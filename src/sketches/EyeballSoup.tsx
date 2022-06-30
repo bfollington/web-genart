@@ -71,7 +71,8 @@ function drawStalk(
   q.circle(tip.x, tip.y, k * (1 * Math.cos(t / 100 - Math.PI / 4)))
 }
 
-const scale = devicePixelRatio >= 3 ? 3 : 5
+// may need to just check for overall canvas area instead of pixel ratio, don't want to exclude iPad
+const scale = 5
 
 export function EyeballSoup() {
   const g = useRef<p5Types.Graphics | null>(null)
@@ -111,10 +112,24 @@ export function EyeballSoup() {
 
     const displace = (v: Vector) => {
       const k = config.mouseDistort
-      const displacement = q.createVector(
-        _q.mouseX / (scale * dpr.current) - v.x,
-        _q.mouseY / (scale * dpr.current) - v.y
-      )
+      const displacement = q.createVector(0, 0)
+
+      if (!_q.touches || _q.touches.length === 0) {
+        displacement.add(
+          _q.mouseX / (scale * dpr.current) - v.x,
+          _q.mouseY / (scale * dpr.current) - v.y
+        )
+      } else {
+        for (const touch of _q.touches) {
+          const { x, y } = touch as { x: number; y: number; id: number }
+
+          displacement.add(
+            x / (scale * dpr.current) - v.x,
+            y / (scale * dpr.current) - v.y
+          )
+        }
+      }
+
       displacement.mult(k / Math.pow(displacement.mag(), 2))
 
       return v.sub(displacement)
@@ -157,7 +172,10 @@ export function EyeballSoup() {
       autoSize
       width={1024}
       height={1024}
+      enableFullscreen
+      sketchName="Eyeball Soup"
       onResize={onResize}
+      enableScreenshot
       onMouseClicked={() => {
         if (!isFxHash()) {
           config = generate()

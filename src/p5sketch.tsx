@@ -1,6 +1,7 @@
 import p5Types from 'p5'
 import p5 from 'p5'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import enterFullScreen from './enter-full-screen.svg'
 
 export const p5Events = [
   'draw',
@@ -32,15 +33,21 @@ export function P5Sketch({
   noSmooth = false,
   autoSize = false,
   webgl = false,
+  sketchName,
+  enableFullscreen = false,
+  enableScreenshot = false,
   ...events
 }: {
   setup: (q: p5Types, parentElement?: Element | null) => void
   draw: (q: p5Types) => void
   width: number
   height: number
+  sketchName: string
   noSmooth?: boolean
   autoSize?: boolean
   webgl?: boolean
+  enableFullscreen?: boolean
+  enableScreenshot?: boolean
 
   onMouseClicked?: (event: any | undefined) => void
   onResize?: (x: number, y: number) => void
@@ -51,6 +58,11 @@ export function P5Sketch({
 
   const setupRef = useRef(setup)
   const drawRef = useRef(draw)
+
+  const onFullscreen = useCallback(() => {
+    const isFullscreen = sketch.current?.fullscreen() || false
+    sketch.current?.fullscreen(!isFullscreen)
+  }, [sketch])
 
   useEffect(() => {
     const cleanup = () => {
@@ -104,20 +116,40 @@ export function P5Sketch({
 
       q.keyPressed = () => {
         const code = q.keyCode
-        if (code === 70) {
-          q.fullscreen(true)
+        if (code === 70 && enableFullscreen) {
+          onFullscreen()
+        }
+
+        if (code == 83 && enableScreenshot) {
+          q.saveCanvas(sketchName)
         }
       }
     })
 
     return cleanup
-  }, [setup, draw, autoSize, events, height, webgl, width])
+  }, [
+    setup,
+    draw,
+    autoSize,
+    events,
+    height,
+    enableFullscreen,
+    webgl,
+    width,
+    onFullscreen,
+  ])
 
   return (
     <div
       className={noSmooth ? 'p5js-container no-smooth' : 'p5js-container'}
       style={{ height: '100%' }}
       ref={elem}
-    />
+    >
+      {enableFullscreen && (
+        <button onClick={onFullscreen} title="Enter fullscreen (f)">
+          <img src={enterFullScreen} alt="icon for enter fullscreen" />
+        </button>
+      )}
+    </div>
   )
 }
