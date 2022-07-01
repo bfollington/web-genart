@@ -65,8 +65,36 @@ export function P5Sketch({
   }, [sketch])
 
   useEffect(() => {
+    const handleResize = () => {
+      // eslint-disable-next-line no-debugger
+      if (elem.current) {
+        const b = elem.current.getBoundingClientRect()
+        document.documentElement.style.setProperty('--height', `${window.innerHeight}px`)
+
+        if (!sketch.current) return
+        const targetWidth = b.width
+        const targetHeight = Math.min(window.innerHeight, b.height)
+
+        if (
+          sketch.current.width !== targetWidth ||
+          sketch.current.height !== targetHeight
+        ) {
+          if (autoSize) {
+            sketch.current.resizeCanvas(targetWidth, targetHeight)
+          }
+
+          events.onResize && events.onResize(b.width, b.height)
+        }
+      }
+    }
+
+    document.addEventListener('resize', handleResize)
+    const i = setInterval(handleResize, 100)
+
     const cleanup = () => {
       sketch.current?.remove()
+      document.removeEventListener('resize', handleResize)
+      clearInterval(i)
     }
 
     // A bunch of annoying checks to play nicely in React.StrictMode
@@ -106,21 +134,7 @@ export function P5Sketch({
         q.mouseClicked = events.onMouseClicked
       }
 
-      q.windowResized = () => {
-        if (elem.current) {
-          const b = elem.current.getBoundingClientRect()
-          document.documentElement.style.setProperty(
-            '--height',
-            `${window.innerHeight}px`
-          )
-
-          if (autoSize) {
-            q.resizeCanvas(b.width, Math.min(window.innerHeight, b.height))
-          }
-
-          events.onResize && events.onResize(b.width, b.height)
-        }
-      }
+      q.windowResized = handleResize
 
       q.keyPressed = () => {
         const code = q.keyCode

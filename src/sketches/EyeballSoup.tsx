@@ -42,6 +42,10 @@ let config = generate(isFxHash() ? undefined : defaultPalette)
   mouseDistort: config.mouseDistort,
 }
 
+function isSmallScreen(q: p5Types) {
+  return q.width < 30 || q.height < 30
+}
+
 function drawStalk(
   q: p5Types,
   dpr: number,
@@ -65,8 +69,15 @@ function drawStalk(
   }
 
   let tip = q.createVector(x, y)
+  const tipLengthScale = isSmallScreen(q) ? 0.5 : 1
   for (let i = 0; i < config.stalkLength; i++) {
-    const newTip = next(q, t + Math.sin(t / 1000) + i * config.timeScale, tip.x, tip.y, 2)
+    const newTip = next(
+      q,
+      t + Math.sin(t / 1000) + i * config.timeScale,
+      tip.x,
+      tip.y,
+      tipLengthScale * 2
+    )
     displace(newTip)
     q.stroke(config.colors.stalk(1))
 
@@ -131,10 +142,12 @@ export function EyeballSoup() {
     const q = g.current
 
     q.background(config.colors.bg(0.5))
-    const layout = grid(
-      Math.min(18, Math.round(q.height / 10)),
-      Math.min(24, Math.round(q.width / 10))
-    )
+    const layout = isSmallScreen(q)
+      ? grid(Math.round(q.height / 6), Math.round(q.width / 6))
+      : grid(
+          Math.min(18, Math.round(q.height / 10)),
+          Math.min(24, Math.round(q.width / 10))
+        )
 
     const margin = q.createVector(q.width / (4 * scale), q.width / (4 * scale))
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
@@ -160,6 +173,10 @@ export function EyeballSoup() {
       }
 
       displacement.mult(k / Math.pow(displacement.mag(), 2))
+
+      if (isSmallScreen(q)) {
+        displacement.div(2.5)
+      }
 
       return v.sub(displacement)
     }
