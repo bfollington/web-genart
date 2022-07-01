@@ -10,6 +10,18 @@ export function choose<T>(from: T[]) {
   return from[Math.floor(random() * from.length)]
 }
 
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+export function shuffle(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+
+  return array
+}
+
 export function isFxHash() {
   const isExport = process.env.REACT_APP_BUILD_TARGET === 'fxhash'
   return !!isExport
