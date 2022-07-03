@@ -222,7 +222,7 @@ export function RainbowBody() {
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
     const palette = config.palette
 
-    q.translate(q.width, q.height / 2)
+    q.translate(q.width, q.height / 4)
     q.rotate(45)
     drawRectangleGradient(
       q,
@@ -235,7 +235,7 @@ export function RainbowBody() {
       palette
     )
     q.rotate(-45)
-    q.translate(-q.width, -q.height / 2)
+    q.translate(-q.width, -q.height / 4)
 
     const midX = margin.x + area.x / 2
     const midY = margin.y + area.y / 2
