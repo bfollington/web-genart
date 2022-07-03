@@ -6,6 +6,7 @@ import { EyeballSoup } from './sketches/EyeballSoup'
 import { Frame } from './Frame'
 import { BezierStack } from './sketches/BezierStack'
 import { Debug } from './sketches/Debug'
+import { RainbowBody } from './sketches/RainbowBody'
 
 function GalleryEntry() {
   return (
@@ -13,7 +14,7 @@ function GalleryEntry() {
       <Frame>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<BezierStack />} />
+            <Route path="/" element={<RainbowBody />} />
             <Route path="/eyeball-soup" element={<EyeballSoup />} />
             <Route path="/debug" element={<Debug />} />
             <Route path="/bezier" element={<Bezier />} />

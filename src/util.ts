@@ -56,3 +56,18 @@ export function grid(rows: number, columns: number) {
     columns,
   }
 }
+
+type RGBTriple = [number, number, number]
+export function interpolateCosine(
+  [ar, ag, ab]: RGBTriple,
+  [br, bg, bb]: RGBTriple,
+  [cr, cg, cb]: RGBTriple,
+  [dr, dg, db]: RGBTriple
+) {
+  return (t: number) =>
+    [
+      ar + br * Math.cos(2 * Math.PI * (cr * t + dr)),
+      ag + bg * Math.cos(2 * Math.PI * (cg * t + dg)),
+      ab + bb * Math.cos(2 * Math.PI * (cb * t + db)),
+    ].map((v) => Math.floor(Math.max(0, Math.min(1, v)) * 255)) as RGBTriple
+}
