@@ -4,6 +4,16 @@ import { P5Sketch } from '../p5sketch'
 import palettes from '../color-palettes.json'
 import { choose, grid, hexToAdjustable, isFxHash, shuffle } from '../util'
 
+/*
+A tribute to vector fields of all kinds, a simple tool for us to glimpse the true complexity of things. 
+
+Responsive (works on mobile)
+s for screenshot
+f for fullscreen
+
+made with p5js
+ */
+
 function next(q: p5Types, t: number, x: number, y: number, a: number) {
   return q.createVector(
     x + q.map(Math.sin(t / 100), -1, 1, -a, a),
