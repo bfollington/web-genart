@@ -5,7 +5,11 @@ import palettes from '../color-palettes.json'
 import { choose, grid, hexToAdjustable, isFxHash, shuffle } from '../util'
 
 /*
-A tribute to vector fields of all kinds, a simple tool for us to glimpse the true complexity of things. 
+A tribute to vector fields of all kinds, a simple tool for us to glimpse the true complexity of things.
+
+The leaves of trees show the shape of the wind, likewise kelp forests show the shape of water. The true phenomena that shape reality are hidden from us, obscured by the intricacies of physical behaviour, and yet sometimes we briefly feel that there is an undifferentiated field behind it all.
+
+This token is interactive, it responds to mouse and (multi)touch input.
 
 Responsive (works on mobile)
 s for screenshot
