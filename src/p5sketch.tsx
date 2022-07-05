@@ -35,6 +35,7 @@ export function P5Sketch({
   webgl = false,
   sketchName,
   enableFullscreen = false,
+  showFullscreenButton = false,
   enableScreenshot = false,
   ...events
 }: {
@@ -47,6 +48,7 @@ export function P5Sketch({
   autoSize?: boolean
   webgl?: boolean
   enableFullscreen?: boolean
+  showFullscreenButton?: boolean
   enableScreenshot?: boolean
 
   onMouseClicked?: (event: any | undefined) => void
@@ -167,7 +169,7 @@ export function P5Sketch({
       style={{ height: '100%' }}
       ref={elem}
     >
-      {enableFullscreen && (
+      {enableFullscreen && showFullscreenButton && (
         <button onClick={onFullscreen} title="Enter fullscreen (f)">
           <img src={enterFullScreen} alt="icon for enter fullscreen" />
         </button>

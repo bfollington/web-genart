@@ -282,6 +282,7 @@ export function RainbowBody() {
       width={1024}
       height={1024}
       enableFullscreen
+      showFullscreenButton
       sketchName="Rainbow Body"
       enableScreenshot
       onMouseClicked={() => {
