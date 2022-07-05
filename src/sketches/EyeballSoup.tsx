@@ -26,10 +26,13 @@ function next(q: p5Types, t: number, x: number, y: number, a: number) {
 }
 
 function generate(palette?: string[]) {
-  palette = palette || shuffle(choose(palettes))
+  const chosen = choose(palettes)
+  const idx = palettes.indexOf(chosen)
+  palette = palette || shuffle(chosen)
 
   const c = {
     palette,
+    paletteIndex: idx,
     stalkLength: choose([3, 4, 5, 6, 7, 8]),
     timeScale: choose([2500000, 250000, 25000, 2500, -2500000, -250000, -25000, -2500]),
     mouseDistort: choose([16, 32, 8]),
@@ -43,7 +46,6 @@ function generate(palette?: string[]) {
     },
   }
 
-  console.log(c)
   return c
 }
 
@@ -54,6 +56,8 @@ let config = generate(isFxHash() ? undefined : defaultPalette)
   stalkLength: config.stalkLength,
   timeScale: config.timeScale,
   mouseDistort: config.mouseDistort,
+  eyeballScale: config.eyeballScale,
+  palette: config.paletteIndex,
 }
 
 function isSmallScreen(q: p5Types) {
