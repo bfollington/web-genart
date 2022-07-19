@@ -130,7 +130,7 @@ function drawTip(q: p5Types, dpr: number, x: number, y: number, t: number) {
 }
 
 // may need to just check for overall canvas area instead of pixel ratio, don't want to exclude iPad
-const scale = 5
+const scale = devicePixelRatio >= 1.1 ? 5 : 2.5
 
 export function EyeballSoup() {
   const g = useRef<p5Types.Graphics | null>(null)

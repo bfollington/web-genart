@@ -7,6 +7,8 @@ import { Frame } from './Frame'
 import { BezierStack } from './sketches/BezierStack'
 import { Debug } from './sketches/Debug'
 import { RainbowBody } from './sketches/RainbowBody'
+import { RainbowBodyII } from './sketches/RainbowBodyII'
+import { Flower } from './sketches/Flower'
 
 function GalleryEntry() {
   return (
@@ -14,10 +16,11 @@ function GalleryEntry() {
       <Frame>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<RainbowBody />} />
+            <Route path="/" element={<Flower />} />
             <Route path="/eyeball-soup" element={<EyeballSoup />} />
             <Route path="/debug" element={<Debug />} />
             <Route path="/bezier" element={<Bezier />} />
+            <Route path="/bezier-stack" element={<BezierStack />} />
             <Route path="/audio-viz" element={<AudioViz />} />
           </Routes>
         </BrowserRouter>
