@@ -9,6 +9,7 @@ import { Debug } from './sketches/Debug'
 import { RainbowBody } from './sketches/RainbowBody'
 import { RainbowBodyII } from './sketches/RainbowBodyII'
 import { Flower } from './sketches/Flower'
+import { FlowerII } from './sketches/FlowerII'
 
 function GalleryEntry() {
   return (
@@ -16,7 +17,8 @@ function GalleryEntry() {
       <Frame>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Flower />} />
+            <Route path="/" element={<FlowerII />} />
+            <Route path="/flower" element={<Flower />} />
             <Route path="/eyeball-soup" element={<EyeballSoup />} />
             <Route path="/debug" element={<Debug />} />
             <Route path="/bezier" element={<Bezier />} />
