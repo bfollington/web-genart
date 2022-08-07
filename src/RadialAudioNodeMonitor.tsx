@@ -75,7 +75,8 @@ export function FrequencyWindow({
 
       q.background(0, 96)
 
-      q.noStroke()
+      q.stroke(255, 255, 255, 64)
+      q.strokeWeight(0.5)
       q.fill(255, 0, 255, 64)
 
       // analyserNode.getFloatTimeDomainData(analyserData.current)
@@ -96,14 +97,11 @@ export function FrequencyWindow({
 
       q.endShape()
 
-      q.noFill()
-      q.stroke(128, 255, 0, 255)
-
-      // analyserNode.getFloatTimeDomainData(analyserData.current)
-
+      q.fill(255, 0, 0, 64)
       q.beginShape()
 
-      for (let i = 0; i < timeDomainData.current.length; i++) {
+      for (let i = 0; i < frequencyData.current.length; i++) {
+        // -1...1
         const amplitude = frequencyData.current[i] / 100
 
         const r1 = q.map(amplitude, 0, -1, 0, 128)
@@ -112,11 +110,28 @@ export function FrequencyWindow({
         const theta = q.map(i, 0, frequencyData.current.length - 1, 0, 2 * q.TWO_PI)
 
         q.vertex(q.width / 2 + r2 * q.cos(theta), q.height / 2 + r1 * q.sin(theta))
+      }
+
+      q.endShape()
+
+      q.fill(255, 255, 0, 64)
+      q.beginShape()
+
+      for (let i = 0; i < frequencyData.current.length; i++) {
         // -1...1
+        const amplitude = frequencyData.current[i] / 100
+
+        const r1 = q.map(amplitude, 0, -1, 0, 48)
+        const r2 = q.map(amplitude, 0, -1, 0, 48)
+
+        const theta = q.map(i, 0, frequencyData.current.length - 1, 0, 2 * q.TWO_PI)
+
         q.vertex(q.width / 2 + r2 * q.cos(theta), q.height / 2 + r1 * q.sin(theta))
       }
 
       q.endShape()
+
+      q.noFill()
     },
     [frequencyData, timeDomainData, timeDomainTarget, frequencyTarget, analyserNode]
   )

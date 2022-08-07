@@ -11,6 +11,7 @@ import { RainbowBodyII } from './sketches/RainbowBodyII'
 import { Flower } from './sketches/Flower'
 import { FlowerII } from './sketches/FlowerII'
 import { Arpeggio } from './sketches/Arpeggio'
+import { Chords } from './sketches/Chords'
 
 function GalleryEntry() {
   return (
@@ -26,6 +27,7 @@ function GalleryEntry() {
             <Route path="/bezier-stack" element={<BezierStack />} />
             <Route path="/audio-viz" element={<AudioViz />} />
             <Route path="/arpeggio" element={<Arpeggio />} />
+            <Route path="/chords" element={<Chords />} />
           </Routes>
         </BrowserRouter>
       </Frame>
