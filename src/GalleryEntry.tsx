@@ -28,6 +28,8 @@ function GalleryEntry() {
             <Route path="/audio-viz" element={<AudioViz />} />
             <Route path="/arpeggio" element={<Arpeggio />} />
             <Route path="/chords" element={<Chords />} />
+            <Route path="/rainbow" element={<RainbowBody />} />
+            <Route path="/rainbow-ii" element={<RainbowBodyII />} />
           </Routes>
         </BrowserRouter>
       </Frame>
