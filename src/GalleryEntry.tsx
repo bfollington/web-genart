@@ -12,6 +12,9 @@ import { Flower } from './sketches/Flower'
 import { FlowerII } from './sketches/FlowerII'
 import { Arpeggio } from './sketches/Arpeggio'
 import { Chords } from './sketches/Chords'
+import ScreenQuadScene from './sketches/FullscreenShader'
+import FlightOfTheOctaHedra from './sketches/FlightOfTheOctahedra'
+import RaymarchingTemplate from './sketches/RaymarchingTemplate'
 
 function GalleryEntry() {
   return (
@@ -30,6 +33,9 @@ function GalleryEntry() {
             <Route path="/chords" element={<Chords />} />
             <Route path="/rainbow" element={<RainbowBody />} />
             <Route path="/rainbow-ii" element={<RainbowBodyII />} />
+            <Route path="/fullscreen-shader" element={<ScreenQuadScene />} />
+            <Route path="/octahedra" element={<FlightOfTheOctaHedra />} />
+            <Route path="/raymarching" element={<RaymarchingTemplate />} />
           </Routes>
         </BrowserRouter>
       </Frame>
