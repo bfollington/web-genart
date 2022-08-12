@@ -13,6 +13,7 @@ specifiers:
   '@types/react': ^18.0.17
   '@types/react-dom': ^18.0.6
   '@types/three': ^0.143.0
+  jotai: ^1.7.8
   lamina: ^1.1.23
   p5: ^1.4.1
   react: ^18.2.0
@@ -34,6 +35,7 @@ dependencies:
   '@types/p5': 1.4.2
   '@types/react': 18.0.17
   '@types/react-dom': 18.0.6
+  jotai: 1.7.8_react@18.2.0
   lamina: 1.1.23_ospzrsobolq7mqt55xfmhtprxe
   p5: 1.4.2
   react: 18.2.0
@@ -6800,6 +6802,43 @@ packages:
       - supports-color
       - ts-node
       - utf-8-validate
+    dev: false
+
+  /jotai/1.7.8_react@18.2.0:
+    resolution: {integrity: sha512-rXwWz6uLqyZUCRzWIPiYTjI1hjskVxVpDN3lBoOHi66z6uQFkFmKwR8YhcQd+Ex4lODlReuKNIx6WwsF9aKy3g==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      '@babel/template': '*'
+      '@tanstack/query-core': '*'
+      '@urql/core': '*'
+      immer: '*'
+      optics-ts: '*'
+      react: '>=16.8'
+      valtio: '*'
+      wonka: '*'
+      xstate: '*'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@babel/template':
+        optional: true
+      '@tanstack/query-core':
+        optional: true
+      '@urql/core':
+        optional: true
+      immer:
+        optional: true
+      optics-ts:
+        optional: true
+      valtio:
+        optional: true
+      wonka:
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /js-tokens/4.0.0:

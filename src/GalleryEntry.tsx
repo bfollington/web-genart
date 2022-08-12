@@ -15,6 +15,7 @@ import { Chords } from './sketches/Chords'
 import ScreenQuadScene from './sketches/FullscreenShader'
 import FlightOfTheOctaHedra from './sketches/FlightOfTheOctahedra'
 import RaymarchingTemplate from './sketches/RaymarchingTemplate'
+import { Drums } from './sketches/Drums'
 
 function GalleryEntry() {
   return (
@@ -36,6 +37,7 @@ function GalleryEntry() {
             <Route path="/fullscreen-shader" element={<ScreenQuadScene />} />
             <Route path="/octahedra" element={<FlightOfTheOctaHedra />} />
             <Route path="/raymarching" element={<RaymarchingTemplate />} />
+            <Route path="/drums" element={<Drums />} />
           </Routes>
         </BrowserRouter>
       </Frame>

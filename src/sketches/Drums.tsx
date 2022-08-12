@@ -1,3 +1,5 @@
+import { Box, Cloud, Environment, OrbitControls, Sky } from '@react-three/drei'
+import { Canvas } from '@react-three/fiber'
 import * as Tone from 'tone'
 import { BiquadFilter, Sequence } from 'tone'
 import {
@@ -10,17 +12,40 @@ import {
 } from '../music'
 import { song } from '../patterns'
 import { RadialAudioNodeMonitor } from '../RadialAudioNodeMonitor'
+import { Stars } from '@react-three/drei'
+import { atom, useAtom } from 'jotai'
+import { useEffect } from 'react'
+import { Color } from 'three'
+import '../RefractionMaterial'
+import Diamonds from './refraction/Diamonds'
+import {
+  Bloom,
+  DepthOfField,
+  EffectComposer,
+  Noise,
+  Vignette,
+} from '@react-three/postprocessing'
 
 const numCols = 16
 const vol = new Tone.Volume(-12).toDestination()
+const beats = atom(0)
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+let onBeat = () => {}
 
 // PATTERNS
+const kick = new Tone.Pattern(
+  function (time, note) {
+    if (note !== '-') kickDrum.triggerAttackRelease(note, '8n')
+  },
+  ['-', 'C1', '-', 'E1', '-', 'D1', '-', 'C1', 'C1'],
+  'upDown'
+)
 
 const bass = new Tone.Pattern(
   function (time, note) {
-    if (note !== '-') bassSynth.triggerAttackRelease(note, '8n')
+    if (note !== '-') bassSynth.triggerAttackRelease(note, '16n')
   },
-  ['C2', '-', 'E2', '-', 'D2', '-'],
+  ['A#2', 'B1', 'E2', 'C3', 'F2'],
   'upDown'
 )
 
@@ -39,7 +64,10 @@ const pattern = new Tone.Pattern(
 
 const pattern2 = new Tone.Pattern(
   function (time, note) {
-    if (note !== '-') pluck.triggerAttackRelease(note, '4n')
+    if (note !== '-') {
+      pluck.triggerAttackRelease(note, '4n')
+      onBeat()
+    }
   },
   ['C4', 'D4', 'E5', 'A3', 'F5'],
   'alternateDown'
@@ -47,10 +75,10 @@ const pattern2 = new Tone.Pattern(
 
 const sparkle = new Tone.Pattern(
   function (time, note) {
-    if (note !== '-') pad.triggerAttackRelease(note, '16n')
+    if (note !== '-') pad.triggerAttackRelease(note, '32n')
   },
-  ['C4', '-', 'E5', '-', 'F5'],
-  'randomWalk'
+  ['A#6', 'C5', 'F5', 'E7', 'F6', 'B6'],
+  'alternateUp'
 )
 
 // EFFECTS
@@ -68,6 +96,12 @@ const effect = new Tone.FeedbackDelay(`${Math.floor(numCols / 2)}n`, 1 / 3)
 effect.wet.value = 0.2
 
 // INSTRUMENTS
+
+const kickDrum = new Tone.MembraneSynth()
+
+kickDrum.set({
+  volume: -10,
+})
 
 // bass synth
 const bassSynth = new Tone.PolySynth()
@@ -129,22 +163,22 @@ chordSynth.connect(effect)
 pad.connect(filter).connect(delay).connect(effect)
 pluck.connect(effect)
 bassSynth.connect(vol)
-pad.connect(vol)
 effect.connect(reverb)
 reverb.connect(vol)
+kickDrum.connect(vol)
 
 console.log(IChord)
 
-export function Chords() {
+export function Drums() {
   return (
     <>
       <button
         type="button"
         onClick={() => {
-          Tone.Transport.bpm.value = 120
+          Tone.Transport.bpm.value = 240
           Tone.start()
           // sequence.start(0)
-          const patterns = [pattern, bass, pattern2]
+          const patterns = [kick, bass, sparkle]
           patterns.forEach((p) => p.start())
 
           Tone.Transport.start()
@@ -152,13 +186,30 @@ export function Chords() {
       >
         Start
       </button>
-      <RadialAudioNodeMonitor
-        width={1024}
-        height={1024}
-        input={vol}
-        fftAnalysisSampleRate={30}
-        detail={4}
-      />
+      <Sketch />
     </>
+  )
+}
+
+function Sketch() {
+  const [beatsValue, setBeats] = useAtom(beats)
+  useEffect(() => {
+    onBeat = () => setBeats((b) => b + 1)
+  }, [setBeats])
+
+  return (
+    <Canvas>
+      <Sky azimuth={0} inclination={0.8} rayleigh={0.2} distance={8} />
+      {/* <Stars /> */}
+      {/* <Cloud scale={2} position={[0, -10, -20]} color="white" /> */}
+      <Diamonds />
+      <pointLight position={[0, 0, 0]} intensity={0.5} />
+      <OrbitControls />
+      <EffectComposer>
+        <DepthOfField focusDistance={0} focalLength={0.02} bokehScale={2} height={480} />
+        <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={800} />
+        <Noise opacity={0.1} />
+      </EffectComposer>
+    </Canvas>
   )
 }
