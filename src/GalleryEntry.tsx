@@ -17,6 +17,7 @@ import FlightOfTheOctaHedra from './sketches/FlightOfTheOctahedra'
 import RaymarchingTemplate from './sketches/RaymarchingTemplate'
 import { Drums } from './sketches/Drums'
 import { RainbowBodyIII } from './sketches/RainbowBodyIII'
+import { Dungeon } from './sketches/Dungeon'
 
 function GalleryEntry() {
   return (
@@ -40,6 +41,7 @@ function GalleryEntry() {
             <Route path="/octahedra" element={<FlightOfTheOctaHedra />} />
             <Route path="/raymarching" element={<RaymarchingTemplate />} />
             <Route path="/drums" element={<Drums />} />
+            <Route path="/dungeon" element={<Dungeon />} />
           </Routes>
         </BrowserRouter>
       </Frame>
