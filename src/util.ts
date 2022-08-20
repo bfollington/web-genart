@@ -1,4 +1,5 @@
 import { random } from './random'
+import * as p5Types from 'p5'
 
 export type FxHashWindow = Window & {
   fxrand?: () => number
@@ -47,10 +48,15 @@ export function hexToAdjustable(hex: string) {
   return (alpha: number) => hexToRGB(hex, alpha)
 }
 
+export function range(from: number, to: number) {
+  return [...Array(to - from)].map((_, i) => i + from)
+}
+
+type Point = [number, number]
 export function grid(rows: number, columns: number) {
   return {
     cells: [...Array(rows)].map((_, ri) =>
-      [...Array(columns)].map((_, ci) => [ri / rows, ci / columns])
+      [...Array(columns)].map((_, ci) => [ri / rows, ci / columns] as Point)
     ),
     rows,
     columns,
@@ -70,4 +76,21 @@ export function interpolateCosine(
       ag + bg * Math.cos(2 * Math.PI * (cg * t + dg)),
       ab + bb * Math.cos(2 * Math.PI * (cb * t + db)),
     ].map((v) => Math.floor(Math.max(0, Math.min(1, v)) * 255)) as RGBTriple
+}
+
+export function withTranslation(
+  q: p5Types,
+  x: number,
+  y: number,
+  routine: (q: p5Types) => void
+) {
+  q.translate(x, y)
+  routine(q)
+  q.translate(-x, -y)
+}
+
+export function withRotation(q: p5Types, r: number, routine: (q: p5Types) => void) {
+  q.rotate(r)
+  routine(q)
+  q.rotate(-r)
 }
