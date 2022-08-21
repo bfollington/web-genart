@@ -19,6 +19,7 @@ import { Drums } from './sketches/Drums'
 import { RainbowBodyIII } from './sketches/RainbowBodyIII'
 import { Dungeon } from './sketches/Dungeon'
 import { RectGrid } from './sketches/RectGrid'
+import { Subdivision } from './sketches/Subdivision'
 
 function GalleryEntry() {
   return (
@@ -44,6 +45,7 @@ function GalleryEntry() {
             <Route path="/drums" element={<Drums />} />
             <Route path="/dungeon" element={<Dungeon />} />
             <Route path="/rectgrid" element={<RectGrid />} />
+            <Route path="/subdivision" element={<Subdivision />} />
           </Routes>
         </BrowserRouter>
       </Frame>
