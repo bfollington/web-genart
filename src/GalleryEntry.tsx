@@ -20,6 +20,8 @@ import { RainbowBodyIII } from './sketches/RainbowBodyIII'
 import { Dungeon } from './sketches/Dungeon'
 import { RectGrid } from './sketches/RectGrid'
 import { Subdivision } from './sketches/Subdivision'
+import { Agents } from './sketches/Agents'
+import { Graph } from './sketches/Graph'
 
 function GalleryEntry() {
   return (
@@ -46,6 +48,8 @@ function GalleryEntry() {
             <Route path="/dungeon" element={<Dungeon />} />
             <Route path="/rectgrid" element={<RectGrid />} />
             <Route path="/subdivision" element={<Subdivision />} />
+            <Route path="/agents" element={<Agents />} />
+            <Route path="/graph" element={<Graph />} />
           </Routes>
         </BrowserRouter>
       </Frame>
