@@ -1,12 +1,12 @@
 import './App.css'
 import { Frame } from './Frame'
-import { EyeballSoup } from './sketches/EyeballSoup'
+import { RainbowBodyIII } from './sketches/RainbowBodyIII'
 
 function FxHashEntry() {
   return (
     <div className="App">
       <Frame>
-        <EyeballSoup />
+        <RainbowBodyIII />
       </Frame>
     </div>
   )

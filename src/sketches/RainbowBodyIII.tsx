@@ -10,6 +10,8 @@ import {
   isFxHash,
   shuffle,
 } from '../util'
+import { random } from '../random'
+import { isJsxOpeningFragment } from 'typescript'
 
 /*
 A tribute to vector fields of all kinds, a simple tool for us to glimpse the true complexity of things. 
@@ -80,11 +82,13 @@ function generate(palette?: string[]) {
 
   const conf = {
     palette: choose([dzogchen, test, c, d, e, f, g]),
-    ringACount: choose([3, 4, 5, 6, 7, 8, 9]),
+    ringACount: choose([4, 6, 7, 8, 9]),
     ringBCount: choose([3, 4, 5, 6, 7, 8, 9]),
-    coreRadius: choose([256, 320, 480, 512]),
+    coreRadius: choose([256, 320, 360, 420, 512, 640]),
     ringARadius: choose([256, 320, 480, 512]),
-    ringBRadius: choose([560, 256, 320, 480, 512]),
+    ringBRadius: choose([560, 256, 360, 420, 640]),
+    baseT: random() * 10,
+    phaseOffset: choose([random() * Math.PI, 0]),
   }
 
   console.log(conf)
@@ -94,10 +98,14 @@ function generate(palette?: string[]) {
 const defaultPalette = ['#95A131', '#C8CD3B', '#F6F1DE', '#F5B9AE', '#EE0B5B']
 let config = generate(isFxHash() ? undefined : defaultPalette)
 
-;(window as any).$fxhashFeatures = {}
+;(window as any).$fxhashFeatures = {
+  innerRings: config.ringACount,
+  outerRings: config.ringBCount,
+  heartSize: config.coreRadius,
+}
 
 function isSmallScreen(q: p5Types) {
-  return q.width < 30 || q.height < 30
+  return q.width < 800 || q.height < 800
 }
 
 type Interpolator = (t: number) => [number, number, number]
@@ -109,9 +117,10 @@ function drawRadialGradient(
   radius: number,
   t: number,
   alpha: number,
-  color: Interpolator
+  color: Interpolator,
+  localScale: number
 ) {
-  for (let r = radius; r > 0; r -= 80) {
+  for (let r = radius; r > 0; r -= 80 * localScale) {
     const c = color(r / radius + t)
     q.stroke(255, 255, 255, 16)
     q.strokeWeight(2)
@@ -191,14 +200,16 @@ export function RainbowBodyIII() {
 
   useEffect(() => {
     const i = setInterval(() => {
-      config = generate()
+      if (!isFxHash()) {
+        config = generate()
+      }
     }, 30000)
 
     return () => clearInterval(i)
   }, [])
 
   const draw = useCallback((q: p5Types) => {
-    const _t = q.millis() / 10000
+    const _t = config.baseT + q.millis() / 10000
     // const _t =
     //   q.millis() / 10000 +
     //   0.2 * Math.sin(q.millis() / 1000) +
@@ -213,12 +224,7 @@ export function RainbowBodyIII() {
         50
 
     q.background(0)
-    const layout = isSmallScreen(q)
-      ? grid(Math.round(q.height / 6), Math.round(q.width / 6))
-      : grid(
-          Math.min(18, Math.round(q.height / 10)),
-          Math.min(24, Math.round(q.width / 10))
-        )
+    const localScale = isSmallScreen(q) ? 0.6 : 1
 
     const margin = q.createVector(q.width / (8 * scale), q.width / (8 * scale))
     const area = q.createVector(q.width - 2 * margin.x, q.height - 2 * margin.y)
@@ -233,7 +239,7 @@ export function RainbowBodyIII() {
       q.width + q.height,
       q.height + q.width,
       t,
-      24,
+      24 * localScale,
       palette
     )
     q.rotate(-45)
@@ -246,9 +252,11 @@ export function RainbowBodyIII() {
     // drawBar(q, midX, midY, 320, -320, (3 * Math.PI) / 4, t)
     // drawBar(q, midX, midY, 320, 320, (5 * Math.PI) / 4, t)
     // drawBar(q, midX, midY, -320, 320, (7 * Math.PI) / 4, t)
-    const r = area.y + config.coreRadius * Math.sin(t)
-    const rr = area.y + config.coreRadius * Math.sin(t + Math.PI / 2)
-    const rrr = area.y + config.coreRadius * Math.sin(t + Math.PI)
+    const r =
+      (area.y + config.coreRadius * (0.1 + Math.sin(t + config.phaseOffset))) * localScale
+    const rr =
+      (area.y + config.coreRadius * (0.1 + Math.sin(t + Math.PI / 2))) * localScale
+    const rrr = (area.y + config.coreRadius * Math.sin(t + Math.PI)) * localScale
 
     q.blendMode(q.SCREEN)
 
@@ -256,12 +264,13 @@ export function RainbowBodyIII() {
       const p = Math.PI / 4 + (i / config.ringACount) * Math.PI * 2 + Math.sin(_t)
       drawRadialGradient(
         q,
-        midX + config.ringARadius * Math.cos(p),
-        midY + config.ringARadius * Math.sin(p),
+        midX + config.ringARadius * Math.cos(p) * localScale,
+        midY + config.ringARadius * Math.sin(p) * localScale,
         r / 2,
         t / 2,
         32,
-        palette
+        palette,
+        localScale
       )
     }
 
@@ -269,16 +278,17 @@ export function RainbowBodyIII() {
       const p = (i / config.ringBCount) * Math.PI * 2 + Math.cos(_t)
       drawRadialGradient(
         q,
-        midX + config.ringBRadius * Math.cos(p),
-        midY + config.ringBRadius * Math.sin(p),
+        midX + config.ringBRadius * Math.cos(p) * localScale,
+        midY + config.ringBRadius * Math.sin(p) * localScale,
         rr / 3,
         t / 3,
         48,
-        palette
+        palette,
+        localScale
       )
     }
 
-    drawRadialGradient(q, midX, midY, rrr, t, 16, palette)
+    drawRadialGradient(q, midX, midY, rrr, t, 16, palette, localScale)
     q.blendMode(q.BLEND)
   }, [])
   return (
