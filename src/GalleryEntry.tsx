@@ -22,6 +22,7 @@ import { RectGrid } from './sketches/RectGrid'
 import { Subdivision } from './sketches/Subdivision'
 import { Agents } from './sketches/Agents'
 import { Graph } from './sketches/Graph'
+import Subconscious from './sketches/Subconscious'
 
 function GalleryEntry() {
   return (
@@ -50,6 +51,7 @@ function GalleryEntry() {
             <Route path="/subdivision" element={<Subdivision />} />
             <Route path="/agents" element={<Agents />} />
             <Route path="/graph" element={<Graph />} />
+            <Route path="/subconscious" element={<Subconscious />} />
           </Routes>
         </BrowserRouter>
       </Frame>
