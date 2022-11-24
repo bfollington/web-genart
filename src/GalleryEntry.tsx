@@ -23,6 +23,7 @@ import { Subdivision } from './sketches/Subdivision'
 import { Agents } from './sketches/Agents'
 import { Graph } from './sketches/Graph'
 import Subconscious from './sketches/Subconscious'
+import SubconsciousII from './sketches/SubconsciousII'
 
 function GalleryEntry() {
   return (
@@ -52,6 +53,7 @@ function GalleryEntry() {
             <Route path="/agents" element={<Agents />} />
             <Route path="/graph" element={<Graph />} />
             <Route path="/subconscious" element={<Subconscious />} />
+            <Route path="/subconscious-ii" element={<SubconsciousII />} />
           </Routes>
         </BrowserRouter>
       </Frame>
