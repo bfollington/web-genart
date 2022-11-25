@@ -24,6 +24,7 @@ import { Agents } from './sketches/Agents'
 import { Graph } from './sketches/Graph'
 import Subconscious from './sketches/Subconscious'
 import SubconsciousII from './sketches/SubconsciousII'
+import Noosphere from './sketches/Noosphere'
 
 function GalleryEntry() {
   return (
@@ -54,6 +55,7 @@ function GalleryEntry() {
             <Route path="/graph" element={<Graph />} />
             <Route path="/subconscious" element={<Subconscious />} />
             <Route path="/subconscious-ii" element={<SubconsciousII />} />
+            <Route path="/noosphere" element={<Noosphere />} />
           </Routes>
         </BrowserRouter>
       </Frame>
